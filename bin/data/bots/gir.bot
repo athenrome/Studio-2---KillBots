@@ -1,0 +1,6 @@
+<bot name="GIR" debug="gir_d.dll" release="gir.dll" threadSafe="true">
+	<sprite file="AntGrey.png" x="0" y="0" w="19" h="23" angleOffset="0" face="move"/>
+	<prite file="gir.png" x="0" y="0" w="77" h="84" angleOffset="0" face="move"/>
+	<mesh file="gir.mesh" />
+	<sound shot="data/bots/playerShoot.wav" hurt="data/bots/alienHit.wav" ead="data/bots/alienHit.wav" />
+</bot>

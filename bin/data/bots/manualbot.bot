@@ -1,0 +1,4 @@
+<bot name="ManualBot" debug="manualbot_d.dll" release="manualbot.dll" threadSafe="true">
+	<sprite file="pony.png" x="0" y="0" w="43" h="43"/>
+	<sound shot="data/bots/wheee.wav" hurt="data/bots/alienHit.wav" dead="data/bots/alienHit.wav" />
+</bot>

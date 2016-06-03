@@ -1,0 +1,4 @@
+<bot name="Blank" debug="blank_d.dll" release="blank.dll" threadSafe="true">
+	<sprite file="zazaka.png" x="0" y="0" w="77" h="84" angleOffset="0" face="move"/>
+	<sound shot="data/bots/playerShoot.wav" hurt="data/bots/alienHit.wav" dead="data/bots/alienHit.wav" />
+</bot>

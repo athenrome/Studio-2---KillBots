@@ -1,0 +1,5 @@
+<bot name="NeuralBot" debug="neural_d.dll" release="neural.dll" threadSafe="true">
+  <sprite file="brain.png" angleOffset="0" face="move"/>
+  <bulletsprite file="lightning.png" x="0" y="0" w="16" h="41"/>
+  <sound shot="data/bots/playerShoot.wav" hurt="data/bots/alienHit.wav" dead="data/bots/alienHit.wav" />
+</bot>

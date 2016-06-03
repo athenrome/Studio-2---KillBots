@@ -1,0 +1,5 @@
+<bot name="Roach" debug="roach_d.dll" release="roach.dll" threadSafe="true">
+	<sprite file="roach.png" x="0" y="0" w="282" h="255"/>
+	<bulletsprite file="geralt.png" x="0" y="0" w="24" h="34" mode="alpha" comment="mode can be none, add, alpha or multiply"/>
+	<sound shot="data/bots/horse_gallop.wav" hurt="data/bots/horse_whinny.wav" dead="data/bots/defaultdead.wav" />
+</bot>
