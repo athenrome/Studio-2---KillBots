@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bots", "bots", "{3D23DB88-4220-4208-B649-281B4476DD57}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "neural", "projects\neural\neural.vcxproj", "{15F903AA-5EB6-4AF6-AB65-EA4765E0B23A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "roach", "projects\roach\roach.vcxproj", "{14D0529A-10BA-451F-A00C-3ECA5A2CE290}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RyBot", "projects\RyBot\RyBot.vcxproj", "{F96473E3-71B7-4BC5-9EF2-DF6AED3269CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,12 @@ Global
 		{14D0529A-10BA-451F-A00C-3ECA5A2CE290}.Release|Win32.ActiveCfg = Release|Win32
 		{14D0529A-10BA-451F-A00C-3ECA5A2CE290}.Release|Win32.Build.0 = Release|Win32
 		{14D0529A-10BA-451F-A00C-3ECA5A2CE290}.Release|x64.ActiveCfg = Release|Win32
+		{F96473E3-71B7-4BC5-9EF2-DF6AED3269CB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F96473E3-71B7-4BC5-9EF2-DF6AED3269CB}.Debug|Win32.Build.0 = Debug|Win32
+		{F96473E3-71B7-4BC5-9EF2-DF6AED3269CB}.Debug|x64.ActiveCfg = Debug|Win32
+		{F96473E3-71B7-4BC5-9EF2-DF6AED3269CB}.Release|Win32.ActiveCfg = Release|Win32
+		{F96473E3-71B7-4BC5-9EF2-DF6AED3269CB}.Release|Win32.Build.0 = Release|Win32
+		{F96473E3-71B7-4BC5-9EF2-DF6AED3269CB}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,5 +80,6 @@ Global
 		{3DFA53DF-7DE3-4714-B4E8-1A42F8E0F186} = {3D23DB88-4220-4208-B649-281B4476DD57}
 		{15F903AA-5EB6-4AF6-AB65-EA4765E0B23A} = {3D23DB88-4220-4208-B649-281B4476DD57}
 		{14D0529A-10BA-451F-A00C-3ECA5A2CE290} = {3D23DB88-4220-4208-B649-281B4476DD57}
+		{F96473E3-71B7-4BC5-9EF2-DF6AED3269CB} = {3D23DB88-4220-4208-B649-281B4476DD57}
 	EndGlobalSection
 EndGlobal
