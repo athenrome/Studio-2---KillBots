@@ -1,0 +1,20 @@
+﻿Build started 6/06/2016 1:11:40 PM.
+     1>Project "C:\Users\rsmith2\Documents\Studio-2---KillBots\projects\RyBot\RyBot.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\rsmith2\Documents\Studio-2---KillBots\dev\include" /I. /I"C:\Users\rsmith2\Documents\Studio-2---KillBots\projects\killbotscore" /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _USRDLL /D BOT_EXPORTS /D _WINDLL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /openmp /Fo"C:\Users\rsmith2\Documents\Studio-2---KillBots\temp\Release\RyBot\\" /Fd"C:\Users\rsmith2\Documents\Studio-2---KillBots\temp\Release\RyBot\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt bot.cpp
+         bot.cpp
+     1>bot.cpp(14): warning C4244: 'argument' : conversion from 'time_t' to 'kf::u32', possible loss of data
+     1>bot.cpp(32): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>bot.cpp(39): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\rsmith2\Documents\Studio-2---KillBots\bin\data\bots\RyBot.dll" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Users\rsmith2\Documents\Studio-2---KillBots\dev\lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib qgf2dutil.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"C:\Users\rsmith2\Documents\Studio-2---KillBots\bin\data\bots\RyBot.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\rsmith2\Documents\Studio-2---KillBots\temp\Release\RyBot\RyBot.lib" /MACHINE:X86 /SAFESEH /DLL "C:\Users\rsmith2\Documents\Studio-2---KillBots\temp\Release\RyBot\bot.obj"
+            Creating library C:\Users\rsmith2\Documents\Studio-2---KillBots\temp\Release\RyBot\RyBot.lib and object C:\Users\rsmith2\Documents\Studio-2---KillBots\temp\Release\RyBot\RyBot.exp
+         Generating code
+         Finished generating code
+         RyBot.vcxproj -> C:\Users\rsmith2\Documents\Studio-2---KillBots\bin\data\bots\RyBot.dll
+     1>Done Building Project "C:\Users\rsmith2\Documents\Studio-2---KillBots\projects\RyBot\RyBot.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.67
