@@ -36,11 +36,16 @@ void RyBot::update(const BotInput &input, BotOutput27 &output)
 	//output.moveDirection.set(m_rand.norm()*2.0-1.0, m_rand.norm()*2.0-1.0);
 	
 	output.lookDirection.set(0,1);
-	output.action = BotOutput::shoot;
+	
 	output.spriteFrame = (output.spriteFrame+1)%2;
 	
 	output.moveDirection = ChooseMoveTarget(matchData.mapData);
 	output.motor = botData.motor;
+
+	UpdateLookDirection(2);
+
+	output.lookDirection.set(cos(lookAngle), sin(lookAngle));
+	output.action = BotOutput27::scan;
 
 	
 }

@@ -44,9 +44,9 @@ public:
 		return newTarget;
 	}
 
-	void MoveScanner(float toAdjust)
+	void UpdateLookDirection(float toAdjust)
 	{
-		//lookAngle
+		lookAngle += matchData.scanFOV * 2;
 	}
 
 	void FollowTarget()
