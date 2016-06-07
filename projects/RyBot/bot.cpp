@@ -1,50 +1,58 @@
 #include "bot.h"
 #include "time.h"
 
+
+
 extern "C"
 {
 	BotInterface27 BOT_API *CreateBot27()
 	{
-		return new Blank();
+		return new RyBot();
 	}
 }
 
-Blank::Blank()
+RyBot::RyBot()
 {
 	m_rand(time(0)+(int)this);
 }
 
-Blank::~Blank()
+RyBot::~RyBot()
 {
 }
 
-void Blank::init(const BotInitialData &initialData, BotAttributes &attrib)
+void RyBot::init(const BotInitialData &initialData, BotAttributes &attrib)
 {
-	m_initialData = initialData;
 	attrib.health=1.0;
 	attrib.motor=1.0;
 	attrib.weaponSpeed=1.0;
 	attrib.weaponStrength=1.0;
+
+	matchData = initialData;
+	botData = attrib;
 }
 
-void Blank::update(const BotInput &input, BotOutput27 &output)
+void RyBot::update(const BotInput &input, BotOutput27 &output)
 {
-	output.moveDirection.set(m_rand.norm()*2.0-1.0, m_rand.norm()*2.0-1.0);
-	output.motor = 0.0;
+	//output.moveDirection.set(m_rand.norm()*2.0-1.0, m_rand.norm()*2.0-1.0);
+	
 	output.lookDirection.set(0,1);
-	output.action = BotOutput::scan;
+	output.action = BotOutput::shoot;
 	output.spriteFrame = (output.spriteFrame+1)%2;
-	output.text.clear();
-	char buf[100];
-	sprintf(buf, "%d", input.health);
-	output.text.push_back(TextMsg(buf, input.position - kf::Vector2(0.0f, 1.0f), 0.0f, 0.7f, 1.0f,80));
+	
+	output.moveDirection = ChooseMoveTarget(matchData.mapData);
+	output.motor = botData.motor;
+
+	
 }
 
-void Blank::result(bool won)
+
+
+void RyBot::result(bool won)
 {
 }
 
-void Blank::bulletResult(bool hit)
+void RyBot::bulletResult(bool hit)
 {
 
 }
+

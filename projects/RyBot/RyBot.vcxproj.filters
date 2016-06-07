@@ -23,5 +23,8 @@
     <ClInclude Include="bot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RyMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
