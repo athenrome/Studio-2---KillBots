@@ -1,6 +1,6 @@
 <bot name="RyBot" debug="RyBot_d.dll" release="RyBot.dll" threadSafe="true">
-  <sprite file="zazaka.png" x="0" y="0" w="77" h="84" angleOffset="0" face="move"/>
-  <sprite file="roach.png" x="0" y="0" w="282" h="255"/>
-  <bulletsprite file="roach.png" x="0" y="0" w="282" h="255"/>
+  <sprite file="Gem Blue.png" x="0" y="0" w="77" h="84" angleOffset="0" face="move"/>
+  <sprite file="Star.png" x="0" y="0" w="282" h="255"/>
+  <bulletsprite file="Star.png" x="0" y="0" w="282" h="255"/>
   <sound shot="data/bots/playerShoot.wav" hurt="data/bots/alienHit.wav" dead="data/bots/alienHit.wav" />
 </bot>

@@ -25,20 +25,36 @@ public:
 	kf::Xor128 m_rand;
 
 	BotInitialData matchData;
-	
 	BotAttributes botData;
+
+	bool spottedTarget;
+
+	float lookAngle;
+
+
+
+
+	kf::Vector2 ChooseMoveTarget(MapData mapData)
+	{
+		float newX = RandomRange(-mapData.width, mapData.width);
+		float newY = RandomRange(-mapData.height, mapData.height);
+
+		kf::Vector2 newTarget = kf::Vector2(newX, newY);
+
+		return newTarget;
+	}
+
+	void MoveScanner(float toAdjust)
+	{
+		//lookAngle
+	}
+
+	void FollowTarget()
+	{
+
+	}
 };
 
-kf::Vector2 ChooseMoveTarget(MapData mapData)
-{
-	float newX = RandomRange(-mapData.width, mapData.width);
-	float newY = RandomRange(-mapData.height, mapData.height);
 
-	kf::Vector2 newTarget = kf::Vector2(newX, newY);
-
-	return newTarget;
-
-	
-}
 
 #endif
