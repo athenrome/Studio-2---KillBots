@@ -40,12 +40,17 @@ public:
 	kf::Vector2 moveTarget;;
 
 	Opponent currTarget;
+	float maxTargetDist = 50;
 	bool hasTarget;
 
 	float lookAngle;
 	float lookMoveDist = 1.5;
 
 	int shotQuota = 0;
+
+	BotOutput27::Action lastAction;
+
+	
 
 
 
@@ -63,10 +68,18 @@ public:
 				closestDistance = newDistance;
 				newTarget = opp;
 			}
-		}
+		}		
 
-		currTarget = newTarget;
-		hasTarget = true;
+		if (newTarget < maxTargetDist)
+		{
+			currTarget = newTarget;
+			hasTarget = true;
+		}
+		else
+		{
+			hasTarget = false;
+		}
+		
 	}
 
 

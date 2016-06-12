@@ -33,20 +33,19 @@ void RyBot::init(const BotInitialData &initialData, BotAttributes &attrib)
 
 void RyBot::update(const BotInput &input, BotOutput27 &output)
 {
+	currPos = input.position;
 
 	output.spriteFrame = (output.spriteFrame + 1) % 2;
 	
-	
-	//TARGETING
-	currPos = input.position;
 
+	//TARGETING
 	CheckScanResult(input.scanResult);
 
 	if (lastScanTargets.size() > 0)
 	{
 		FindTarget();
 
-		if (shotQuota <= 0)
+		if (hasTarget && shotQuota <= 0)
 		{
 			shotQuota = 3;
 		}
@@ -58,18 +57,23 @@ void RyBot::update(const BotInput &input, BotOutput27 &output)
 	}
 	//END TARGETING
 
-	
 
-	//FIRING
-	if (hasTarget == true && shotQuota > 0)
-	{
-		output.action = BotOutput::shoot;
-		std::cout << "Shoot" << std::endl;
+
+	if (hasTarget == true)
+	{//Fire at target
 		shotQuota--;
+
+		//look at target
+		output.lookDirection = currTarget.currPos - input.position;
+
+		//shoot bullet
+		output.action = BotOutput::shoot;
+		lastAction = BotOutput::shoot;
 	}
-	//END FIRING
+	else
+	{
 
-
+	}
 
 	//LOOKING
 	if (hasTarget == false)
@@ -88,7 +92,7 @@ void RyBot::update(const BotInput &input, BotOutput27 &output)
 	else
 	{//look at target
 
-		lookAngle = atan2(currTarget.currPos.y, currTarget.currPos.x);
+		output.lookDirection = currTarget.lastKnownPos - input.position;
 
 		output.lookDirection = lookAngle - input.position;
 				
