@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bot.cpp" />
+    <ClCompile Include="Opponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot.h" />

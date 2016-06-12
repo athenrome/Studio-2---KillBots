@@ -1,8 +1,13 @@
 #pragma once
 
-#include <stdlib.h> 
+#include "bot.h"
 
-#include <iostream>
+float DistanceToTarget(kf::Vector2 currPos, kf::Vector2 targetPos)
+{
+	float distance = (currPos.x * currPos.y) - (targetPos.x * targetPos.y);
+
+	return distance;
+}
 
 int RandomRange(int min, int max)
 {
