@@ -13,9 +13,11 @@ public:
 	kf::Vector2 estPos;
 	float estSpeed;
 
-	Opponent(std::string _name)
+	Opponent(std::string _name, kf::Vector2 _pos)
 	{
 		name = _name;
+		currPos = _pos;
+		lastKnownPos = _pos;
 	}
 
 	Opponent();

@@ -33,8 +33,10 @@ void RyBot::init(const BotInitialData &initialData, BotAttributes &attrib)
 
 void RyBot::update(const BotInput &input, BotOutput27 &output)
 {
+	//update the players current pos
 	currPos = input.position;
-
+	
+	//black magic?
 	output.spriteFrame = (output.spriteFrame + 1) % 2;
 	
 
@@ -47,13 +49,9 @@ void RyBot::update(const BotInput &input, BotOutput27 &output)
 
 		if (hasTarget && shotQuota <= 0)
 		{
+			std::cout << "found target" << std::endl;
 			shotQuota = 3;
 		}
-	}
-	else
-	{
-		hasTarget = false;
-		std::cout << "No Target" << std::endl;
 	}
 	//END TARGETING
 
@@ -61,45 +59,37 @@ void RyBot::update(const BotInput &input, BotOutput27 &output)
 
 	if (hasTarget == true)
 	{//Fire at target
-		shotQuota--;
-
+		
 		//look at target
-		output.lookDirection = currTarget.currPos - input.position;
+		//output.lookDirection = currTarget.currPos - input.position;
 
 		//shoot bullet
 		output.action = BotOutput::shoot;
 		lastAction = BotOutput::shoot;
+		shotQuota--;
+		std::cout << "shooting" << std::endl;
+
+		if (shotQuota <= 0)
+		{
+			hasTarget = false;
+		}
 	}
 	else
-	{
-
-	}
-
-	//LOOKING
-	if (hasTarget == false)
 	{//search for target
-		
-		lookAngle += matchData.scanFOV*lookMoveDist;
+
+		//update look angle
+		UpdateLookDirection(lookMoveDist);
+
+		//set new lookangle
 		output.lookDirection.set(cos(lookAngle), sin(lookAngle));
+
+		//search new location
 		output.action = BotOutput27::scan;
-		
+		lastAction = BotOutput27::scan;
 
 		std::cout << "scan" << std::endl;
-
-
-
 	}
-	else
-	{//look at target
 
-		output.lookDirection = currTarget.lastKnownPos - input.position;
-
-		output.lookDirection = lookAngle - input.position;
-				
-
-		std::cout << "Target Observe" << std::endl;
-	}
-	//END LOOKING
 
 
 
@@ -109,7 +99,7 @@ void RyBot::update(const BotInput &input, BotOutput27 &output)
 
 		float distToTarget = DistanceToTarget(input.position, currTarget.currPos);
 
-		if (distToTarget > 50)
+		if (distToTarget > 12)
 		{//move closer
 			output.moveDirection = currTarget.currPos - input.position;
 			output.motor = botData.motor;
@@ -119,21 +109,27 @@ void RyBot::update(const BotInput &input, BotOutput27 &output)
 		{//move back
 			std::cout << "moving away from Target" << std::endl;
 		}
-
-		
 	}
-	else
-	{ //move randomly
-		
+	else if (lastAction == BotOutput27::Action::scan)
+	{
 		moveTarget.set(m_rand() % (matchData.mapData.width - 2) + 1.5, m_rand() % (matchData.mapData.height - 2) + 1.5);
 		output.moveDirection = moveTarget - input.position;
 
-		output.moveDirection = moveTarget - input.position;
 		output.motor = botData.motor;
 		std::cout << "moving randomly" << std::endl;
-
 	}
+	else
+	{
+		std::cout << "standing still" << std::endl;
+	}
+	
+
+		
+
+	
 	//END MOVEMENT
+
+
 
 }
 
@@ -145,6 +141,11 @@ void RyBot::result(bool won)
 
 void RyBot::bulletResult(bool hit)
 {
-
+	//result from the last bullet hit
+	if (hit == true)
+	{
+		shotQuota++;
+		std::cout << "Bullet Hit" << std::endl;
+	}
 }
 

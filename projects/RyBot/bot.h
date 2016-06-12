@@ -37,6 +37,10 @@ public:
 	std::vector<Opponent> lastScanTargets;
 
 	kf::Vector2 currPos;
+	kf::Vector2 lastPos;
+	kf::Vector2 distTraveled;
+
+
 	kf::Vector2 moveTarget;;
 
 	Opponent currTarget;
@@ -70,15 +74,8 @@ public:
 			}
 		}		
 
-		if (newTarget < maxTargetDist)
-		{
-			currTarget = newTarget;
-			hasTarget = true;
-		}
-		else
-		{
-			hasTarget = false;
-		}
+		currTarget = newTarget;
+		hasTarget = true;
 		
 	}
 
@@ -110,7 +107,7 @@ public:
 
 				if (updatedOpp == false)//havent been able to find opponent
 				{
-					opponents.push_back(Opponent(currThing.name)); //created a new opponent
+					opponents.push_back(Opponent(currThing.name, currThing.position)); //created a new opponent
 				}
 			}
 		}
