@@ -33,54 +33,102 @@ void RyBot::init(const BotInitialData &initialData, BotAttributes &attrib)
 
 void RyBot::update(const BotInput &input, BotOutput27 &output)
 {
-	//output.moveDirection.set(m_rand.norm()*2.0-1.0, m_rand.norm()*2.0-1.0);
-	
-	//output.lookDirection.set(0,1);
-	
-	output.spriteFrame = (output.spriteFrame+1)%2;
+
+	output.spriteFrame = (output.spriteFrame + 1) % 2;
 	
 	
 	//TARGETING
 	currPos = input.position;
 
 	CheckScanResult(input.scanResult);
-	
+
 	if (lastScanTargets.size() > 0)
 	{
-		hasTarget = true;
 		FindTarget();
+
+		if (shotQuota <= 0)
+		{
+			shotQuota = 3;
+		}
 	}
 	else
 	{
 		hasTarget = false;
+		std::cout << "No Target" << std::endl;
 	}
 	//END TARGETING
 
+	
+
 	//FIRING
-	if (hasTarget == true)
+	if (hasTarget == true && shotQuota > 0)
 	{
 		output.action = BotOutput::shoot;
-
-		output.lookDirection = currTarget.currPos - input.position;
-		
-		
-		lookAngle = atan2(output.lookDirection.y, output.lookDirection.x);
-
 		std::cout << "Shoot" << std::endl;
-	}
-	else
-	{
-		UpdateLookDirection(2);
-
-		output.lookDirection.set(cos(lookAngle), sin(lookAngle));
-		output.action = BotOutput27::scan;
-		std::cout << "scan" << std::endl;
+		shotQuota--;
 	}
 	//END FIRING
 
+
+
+	//LOOKING
+	if (hasTarget == false)
+	{//search for target
+		
+		lookAngle += matchData.scanFOV*lookMoveDist;
+		output.lookDirection.set(cos(lookAngle), sin(lookAngle));
+		output.action = BotOutput27::scan;
+		
+
+		std::cout << "scan" << std::endl;
+
+
+
+	}
+	else
+	{//look at target
+
+		lookAngle = atan2(currTarget.currPos.y, currTarget.currPos.x);
+
+		output.lookDirection = lookAngle - input.position;
+				
+
+		std::cout << "Target Observe" << std::endl;
+	}
+	//END LOOKING
+
+
+
 	//MOVEMENT
-	output.moveDirection = ChooseMoveTarget(matchData.mapData);
-	output.motor = botData.motor;
+	if (hasTarget == true)
+	{//move towards target
+
+		float distToTarget = DistanceToTarget(input.position, currTarget.currPos);
+
+		if (distToTarget > 50)
+		{//move closer
+			output.moveDirection = currTarget.currPos - input.position;
+			output.motor = botData.motor;
+			std::cout << "moving to Target" << std::endl;
+		}
+		else
+		{//move back
+			std::cout << "moving away from Target" << std::endl;
+		}
+
+		
+	}
+	else
+	{ //move randomly
+		
+		moveTarget.set(m_rand() % (matchData.mapData.width - 2) + 1.5, m_rand() % (matchData.mapData.height - 2) + 1.5);
+		output.moveDirection = moveTarget - input.position;
+
+		output.moveDirection = moveTarget - input.position;
+		output.motor = botData.motor;
+		std::cout << "moving randomly" << std::endl;
+
+	}
 	//END MOVEMENT
 
 }

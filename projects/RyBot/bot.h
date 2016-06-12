@@ -37,11 +37,16 @@ public:
 	std::vector<Opponent> lastScanTargets;
 
 	kf::Vector2 currPos;
+	kf::Vector2 moveTarget;;
 
 	Opponent currTarget;
 	bool hasTarget;
 
 	float lookAngle;
+	float lookMoveDist = 1.5;
+
+	int shotQuota = 0;
+
 
 
 	void FindTarget()
