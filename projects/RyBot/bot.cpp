@@ -57,27 +57,10 @@ void RyBot::update(const BotInput &input, BotOutput27 &output)
 
 
 
-	if (hasTarget == true)
+	if (hasTarget == false && shotQuota <= 0)
 	{//Fire at target
-		
-		//look at target
-		//output.lookDirection = currTarget.currPos - input.position;
 
-		//shoot bullet
-		output.action = BotOutput::shoot;
-		lastAction = BotOutput::shoot;
-		shotQuota--;
-		std::cout << "shooting" << std::endl;
-
-		if (shotQuota <= 0)
-		{
-			hasTarget = false;
-		}
-	}
-	else
-	{//search for target
-
-		//update look angle
+	 //update look angle
 		UpdateLookDirection(lookMoveDist);
 
 		//set new lookangle
@@ -88,45 +71,60 @@ void RyBot::update(const BotInput &input, BotOutput27 &output)
 		lastAction = BotOutput27::scan;
 
 		std::cout << "scan" << std::endl;
-	}
-
-
-
-
-	//MOVEMENT
-	if (hasTarget == true)
-	{//move towards target
-
-		float distToTarget = DistanceToTarget(input.position, currTarget.currPos);
-
-		if (distToTarget > 12)
-		{//move closer
-			output.moveDirection = currTarget.currPos - input.position;
-			output.motor = botData.motor;
-			std::cout << "moving to Target" << std::endl;
-		}
-		else
-		{//move back
-			std::cout << "moving away from Target" << std::endl;
-		}
-	}
-	else if (lastAction == BotOutput27::Action::scan)
-	{
-		moveTarget.set(m_rand() % (matchData.mapData.width - 2) + 1.5, m_rand() % (matchData.mapData.height - 2) + 1.5);
-		output.moveDirection = moveTarget - input.position;
-
-		output.motor = botData.motor;
-		std::cout << "moving randomly" << std::endl;
+		
 	}
 	else
-	{
-		std::cout << "standing still" << std::endl;
-	}
-	
-
+	{//search for target
 		
+		//shoot bullet
+		output.action = BotOutput::shoot;
+		lastAction = BotOutput::shoot;
+		shotQuota--;
+
+		if (shotQuota <= 0)
+		{
+			hasTarget = false;
+		}
+
+		std::cout << "shooting" << std::endl;
+
+	}
+
 
 	
+
+	//MOVEMENT
+	if (canMove == true)
+	{
+		if (hasTarget == true)
+		{//move towards target
+
+			float distToTarget = DistanceToTarget(input.position, currTarget.currPos);
+
+			if (distToTarget > 12)
+			{//move closer
+				output.moveDirection = currTarget.currPos - input.position;
+				output.motor = botData.motor;
+				std::cout << "moving to Target" << std::endl;
+			}
+			else
+			{//move back
+				std::cout << "moving away from Target" << std::endl;
+			}
+		}
+		else if (lastAction == BotOutput27::Action::scan && shotQuota <= 0)
+		{
+			moveTarget.set(m_rand() % (matchData.mapData.width - 2) + 1.5, m_rand() % (matchData.mapData.height - 2) + 1.5);
+			output.moveDirection = moveTarget - input.position;
+
+			output.motor = botData.motor;
+			std::cout << "moving randomly" << std::endl;
+		}
+		else
+		{
+			std::cout << "standing still" << std::endl;
+		}
+	}
 	//END MOVEMENT
 
 

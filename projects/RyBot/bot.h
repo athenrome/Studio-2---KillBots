@@ -40,7 +40,6 @@ public:
 	kf::Vector2 lastPos;
 	kf::Vector2 distTraveled;
 
-
 	kf::Vector2 moveTarget;;
 
 	Opponent currTarget;
@@ -51,6 +50,8 @@ public:
 	float lookMoveDist = 1.5;
 
 	int shotQuota = 0;
+
+	bool canMove = true;
 
 	BotOutput27::Action lastAction;
 
