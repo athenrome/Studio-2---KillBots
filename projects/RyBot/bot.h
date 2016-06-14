@@ -42,14 +42,16 @@ public:
 	kf::Vector2 lastPos;
 	kf::Vector2 distTraveled;
 
-	kf::Vector2 moveTarget;;
+	kf::Vector2 moveTarget;
+	
 
 	
-	float maxTargetDist = 50;
-	bool hasTarget;
+	float maxTargetDist = 1000000;
+	bool hasTarget = false;
 
 	float lookAngle;
 	float lookMoveDist = 1.5;
+	float shootTarget;
 
 	int shotQuota = 0;
 
@@ -64,7 +66,9 @@ public:
 	void FirstRun()
 	{//initilization
 
-		//opponents.push_back(Opponent("blank", kf::Vector2(0, 0)));
+		opponents.push_back(Opponent("blank", kf::Vector2(0, 0)));
+
+		currTarget = opponents[0];
 
 		firstRun = false;
 		std::cout << "Bot Start" << std::endl;
@@ -74,21 +78,26 @@ public:
 	{
 		hasTarget = false;
 		float closestDistance = 10000;
-		Opponent newTarget;
+
+		currTarget = opponents[0]; // default blank target
+		
 
 		for each (Opponent opp in opponents)
 		{
-			float newDistance = DistanceToTarget(currPos, opp.lastKnownPos);
+			float newDistance = DistanceBetweenPoints(currPos, opp.currPos);
 			if (newDistance < closestDistance)
 			{
 				closestDistance = newDistance;
-				newTarget = opp;
+
+				currTarget = opp;
+				hasTarget = true;
+
 				std::cout << "Found New Target" << std::endl;
 			}
+			
 		}		
 
-		currTarget = newTarget;
-		hasTarget = true;
+		
 		
 	}
 
@@ -96,6 +105,7 @@ public:
 	void CheckScanResult(std::vector<VisibleThing> scanResult)
 	{
 		visibleOpponents = false;
+		hasTarget = false;
 
 		for each (VisibleThing currThing in scanResult)
 		{
@@ -109,19 +119,17 @@ public:
 					{
 						currOpp.Spotted(currThing.position);
 
-						//currOpp.lastKnownPos = currOpp.currPos; //turns previos curr pos into last known pos
-						//currOpp.currPos = currThing.position; 
-
 						updatedOpp = true;
-						visibleOpponents = true;
-
-						
+						visibleOpponents = true;						
 					}
 				}
 
 				if (updatedOpp == false)//havent been able to find opponent
 				{
-					opponents.push_back(Opponent(currThing.name, currThing.position)); //created a new opponent
+					Opponent newTarget = Opponent(currThing.name, currThing.position);
+					currTarget = newTarget;
+					hasTarget = true;
+					opponents.push_back(newTarget); //created a new opponent
 				}
 			}
 		}
@@ -135,6 +143,18 @@ public:
 		kf::Vector2 newTarget = kf::Vector2(newX, newY);
 
 		return newTarget;
+	}
+
+	void PredictTarget()
+	{
+		
+	}
+
+	void GetAimDirection()
+	{
+		float result;
+
+		shootTarget = lookAngle;//just for testing
 	}
 
 	void UpdateLookDirection(float toAdjust)

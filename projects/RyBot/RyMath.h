@@ -3,7 +3,7 @@
 #include "kf/kf_random.h"
 #include "kf/kf_vector2.h"
 
-float DistanceToTarget(kf::Vector2 currPos, kf::Vector2 targetPos)
+float DistanceBetweenPoints(kf::Vector2 currPos, kf::Vector2 targetPos)
 {
 	float distance = (currPos.x * currPos.y) - (targetPos.x * targetPos.y);
 

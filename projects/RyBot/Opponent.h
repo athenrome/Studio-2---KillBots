@@ -20,11 +20,12 @@ public:
 	kf::Vector2 estPos;
 	float estSpeed;
 
-	Opponent(std::string _name, kf::Vector2 &_pos)
+	Opponent(std::string _name, kf::Vector2 _pos)
 	{
 		name = _name;
 		currPos = _pos;
 		lastKnownPos = _pos;
+		estPos = _pos;
 
 		trackedPositions.push_back(currPos);
 		std::cout << "created new opponent " << name << std::endl;
@@ -33,17 +34,17 @@ public:
 	Opponent();
 	virtual ~Opponent();
 
-	void Spotted(kf::Vector2 &spottedLocation)
+	void Spotted(kf::Vector2 spottedLocation)
 	{
-
-		lastKnownPos = trackedPositions[trackedPositions.size()];//move currposition to last known position
+		lastKnownPos = currPos;//assignes former curr pos to the last known pos
+		currPos = spottedLocation; // updates curr position
 
 		trackedPositions.push_back(spottedLocation);//insert at last postion
-		
-		currPos = trackedPositions[trackedPositions.size()];//makes the last position the current location
 
 		lastSightingTime = 0; //resets timers
 		trackingTimeout = 20;
+
+		std::cout <<  name << " updated " << currPos << std::endl;
 		
 	}
 
@@ -55,13 +56,13 @@ public:
 		lastSightingTime += 1;
 		trackingTimeout -= 1;
 		
-		if (trackedPositions.size() > 0)//if it isnt empty
-		{
-			if (lastSightingTime > trackingTimeout)
-			{//remove oldest tracked position
-				trackedPositions.erase(trackedPositions.begin());//first postion
-			}
-		}
+		//if (trackedPositions.size() > 0)//if it isnt empty
+		//{
+		//	if (lastSightingTime > trackingTimeout)
+		//	{//remove oldest tracked position
+		//		trackedPositions.erase(trackedPositions.begin());//first postion
+		//	}
+		//}
 
 		
 	}
