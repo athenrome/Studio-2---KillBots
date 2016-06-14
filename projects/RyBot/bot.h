@@ -3,10 +3,9 @@
 #include "bot_interface.h"
 
 #include <stdlib.h> 
-
+#include <string>
 #include <iostream>
-#include "kf/kf_random.h"
-#include "kf/kf_vector2.h"
+
 
 #include "Opponent.h"
 #include "RyMath.h"
@@ -33,8 +32,11 @@ public:
 	BotInitialData matchData;
 	BotAttributes botData;
 
+	bool firstRun = true;
+
 	std::vector<Opponent> opponents;
-	std::vector<Opponent> lastScanTargets;
+	Opponent currTarget;
+	
 
 	kf::Vector2 currPos;
 	kf::Vector2 lastPos;
@@ -42,7 +44,7 @@ public:
 
 	kf::Vector2 moveTarget;;
 
-	Opponent currTarget;
+	
 	float maxTargetDist = 50;
 	bool hasTarget;
 
@@ -53,11 +55,20 @@ public:
 
 	bool canMove = true;
 
+	bool visibleOpponents = false;
+
 	BotOutput27::Action lastAction;
 
 	
 
+	void FirstRun()
+	{//initilization
 
+		//opponents.push_back(Opponent("blank", kf::Vector2(0, 0)));
+
+		firstRun = false;
+		std::cout << "Bot Start" << std::endl;
+	}
 
 	void FindTarget()
 	{
@@ -72,6 +83,7 @@ public:
 			{
 				closestDistance = newDistance;
 				newTarget = opp;
+				std::cout << "Found New Target" << std::endl;
 			}
 		}		
 
@@ -83,7 +95,7 @@ public:
 
 	void CheckScanResult(std::vector<VisibleThing> scanResult)
 	{
-		lastScanTargets.clear();
+		visibleOpponents = false;
 
 		for each (VisibleThing currThing in scanResult)
 		{
@@ -91,18 +103,19 @@ public:
 
 			if (currThing.type == 0)//0 = robot, 1 = bullet
 			{
-				
-
 				for each (Opponent currOpp in opponents)
 				{
 					if (currThing.name == currOpp.name)
 					{
-						currOpp.lastKnownPos = currOpp.currPos; //turns previos curr pos into last known pos
-						currOpp.currPos = currThing.position; 
+						currOpp.Spotted(currThing.position);
+
+						//currOpp.lastKnownPos = currOpp.currPos; //turns previos curr pos into last known pos
+						//currOpp.currPos = currThing.position; 
 
 						updatedOpp = true;
+						visibleOpponents = true;
 
-						lastScanTargets.push_back(currOpp);
+						
 					}
 				}
 

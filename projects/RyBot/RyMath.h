@@ -1,6 +1,7 @@
 #pragma once
 
-#include "bot.h"
+#include "kf/kf_random.h"
+#include "kf/kf_vector2.h"
 
 float DistanceToTarget(kf::Vector2 currPos, kf::Vector2 targetPos)
 {

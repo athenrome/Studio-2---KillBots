@@ -29,6 +29,8 @@ void RyBot::init(const BotInitialData &initialData, BotAttributes &attrib)
 
 	matchData = initialData;
 	botData = attrib;
+
+	FirstRun();
 }
 
 void RyBot::update(const BotInput &input, BotOutput27 &output)
@@ -43,8 +45,9 @@ void RyBot::update(const BotInput &input, BotOutput27 &output)
 	//TARGETING
 	CheckScanResult(input.scanResult);
 
-	if (lastScanTargets.size() > 0)
+	if (opponents.size() > 0 && visibleOpponents == true)//if we have found opponents ignoreing the dummy enemy
 	{
+		std::cout << "1" << std::endl;
 		FindTarget();
 
 		if (hasTarget && shotQuota <= 0)
@@ -61,7 +64,15 @@ void RyBot::update(const BotInput &input, BotOutput27 &output)
 	{//Fire at target
 
 	 //update look angle
-		UpdateLookDirection(lookMoveDist);
+		if (lastAction == BotOutput27::shoot)
+		{//dont move
+			UpdateLookDirection(0);
+		}
+		else
+		{
+			UpdateLookDirection(lookMoveDist);
+		}
+		
 
 		//set new lookangle
 		output.lookDirection.set(cos(lookAngle), sin(lookAngle));
@@ -70,7 +81,7 @@ void RyBot::update(const BotInput &input, BotOutput27 &output)
 		output.action = BotOutput27::scan;
 		lastAction = BotOutput27::scan;
 
-		std::cout << "scan" << std::endl;
+		//std::cout << "scan" << std::endl;
 		
 	}
 	else
@@ -86,7 +97,7 @@ void RyBot::update(const BotInput &input, BotOutput27 &output)
 			hasTarget = false;
 		}
 
-		std::cout << "shooting" << std::endl;
+		//std::cout << "shooting" << std::endl;
 
 	}
 
@@ -105,11 +116,11 @@ void RyBot::update(const BotInput &input, BotOutput27 &output)
 			{//move closer
 				output.moveDirection = currTarget.currPos - input.position;
 				output.motor = botData.motor;
-				std::cout << "moving to Target" << std::endl;
+				//std::cout << "moving to Target" << std::endl;
 			}
 			else
 			{//move back
-				std::cout << "moving away from Target" << std::endl;
+				//std::cout << "moving away from Target" << std::endl;
 			}
 		}
 		else if (lastAction == BotOutput27::Action::scan && shotQuota <= 0)
@@ -118,7 +129,7 @@ void RyBot::update(const BotInput &input, BotOutput27 &output)
 			output.moveDirection = moveTarget - input.position;
 
 			output.motor = botData.motor;
-			std::cout << "moving randomly" << std::endl;
+			//std::cout << "moving randomly" << std::endl;
 		}
 		else
 		{
