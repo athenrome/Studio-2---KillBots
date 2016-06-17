@@ -7,8 +7,8 @@ bot.cpp(138): warning C4244: 'argument': conversion from 'double' to 'float', po
 bot.cpp(143): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
      Creating library F:\SAE Stuff\Trimester 6 - 16T2\Studio 2\Project 1 - Killbots\temp\Release\RyBot\RyBot.lib and object F:\SAE Stuff\Trimester 6 - 16T2\Studio 2\Project 1 - Killbots\temp\Release\RyBot\RyBot.exp
   Generating code
-  1 of 479 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+  0 of 479 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    11 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   RyBot.vcxproj -> F:\SAE Stuff\Trimester 6 - 16T2\Studio 2\Project 1 - Killbots\bin\data\bots\RyBot.dll
