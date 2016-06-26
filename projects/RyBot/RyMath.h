@@ -13,6 +13,6 @@ float DistanceBetweenPoints(kf::Vector2 currPos, kf::Vector2 targetPos)
 int RandomRange(int min, int max)
 {
 	int newNum = rand() % (max - min) + min + 1;
-	std::cout << newNum << std::endl;
+	//std::cout << newNum << std::endl;
 	return newNum;
 }

@@ -13,11 +13,13 @@
   <ItemGroup>
     <ClCompile Include="bot.cpp" />
     <ClCompile Include="Opponent.cpp" />
+    <ClCompile Include="Waypoint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot.h" />
     <ClInclude Include="Opponent.h" />
     <ClInclude Include="RyMath.h" />
+    <ClInclude Include="Waypoint.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F96473E3-71B7-4BC5-9EF2-DF6AED3269CB}</ProjectGuid>

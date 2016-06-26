@@ -9,6 +9,7 @@
 
 #include "Opponent.h"
 #include "RyMath.h"
+#include "Waypoint.h"
 
 #ifdef BOT_EXPORTS
 #define BOT_API __declspec(dllexport)
@@ -27,6 +28,16 @@ public:
 	virtual void result(bool won);
 	virtual void bulletResult(bool hit);
 
+	void PlaceMapWaypoints();
+	void ConnectMapWaypoints();
+	void AssignWaypointCost();
+	void GeneratePath();
+	void FindStartingPos();
+	void FindDestPos();
+
+	void ReachedWaypoint();
+	
+
 	kf::Xor128 m_rand;
 
 	BotInitialData matchData;
@@ -44,8 +55,6 @@ public:
 
 	kf::Vector2 moveTarget;
 	
-
-	
 	float maxTargetDist = 1000000;
 	bool hasTarget = false;
 
@@ -61,7 +70,24 @@ public:
 
 	BotOutput27::Action lastAction;
 
+	std::vector<WaypointRow> mapWaypoints;
+	std::vector<Waypoint> botPath;
+
+	Waypoint waypointTarget;
+	float moveTargetDist;
+
+	Waypoint startPoint;
+	Waypoint destPoint;
+
 	
+};
+
+enum MoveDirection
+{
+	Up,
+	Down,
+	Left,
+	Right,
 };
 
 #endif
