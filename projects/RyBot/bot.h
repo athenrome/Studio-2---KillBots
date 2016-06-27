@@ -10,6 +10,7 @@
 #include "Opponent.h"
 #include "RyMath.h"
 #include "Waypoint.h"
+#include "Path.h"
 
 #ifdef BOT_EXPORTS
 #define BOT_API __declspec(dllexport)
@@ -31,12 +32,16 @@ public:
 	void PlaceMapWaypoints();
 	void ConnectMapWaypoints();
 	void AssignWaypointCost();
-	void GeneratePath();
+
+	void GeneratePaths();
+	void ChoosePath();
+
 	void FindStartingPos();
 	void FindDestPos();
 
-	void ReachedWaypoint();
-	
+	void ManagePath();
+	void ProcessMovement(const BotInput &input, BotOutput27 &output);
+	void ProcessLooking(const BotInput &input, BotOutput27 &output);
 
 	kf::Xor128 m_rand;
 
@@ -71,7 +76,8 @@ public:
 	BotOutput27::Action lastAction;
 
 	std::vector<WaypointRow> mapWaypoints;
-	std::vector<Waypoint> botPath;
+	std::vector<Path> generatedPaths;
+	Path chosenPath;
 
 	Waypoint waypointTarget;
 	float moveTargetDist;

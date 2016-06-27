@@ -16,6 +16,8 @@ public:
 	float cost;
 
 	bool isWall;
+	bool isDest = false;
+	bool isStart = false;
 
 	bool completed;
 	bool inPath;
