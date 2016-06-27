@@ -1,15 +1,8 @@
-﻿  Waypoint.cpp
-  bot.cpp
-bot.cpp(16): warning C4244: 'argument': conversion from 'time_t' to 'kf::u32', possible loss of data
-bot.cpp(95): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-bot.cpp(100): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-bot.cpp(181): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-bot.cpp(182): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-bot.cpp(183): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-     Creating library F:\SAE Stuff\Trimester 6 - 16T2\Studio 2\Project 1 - Killbots\temp\Release\RyBot\RyBot.lib and object F:\SAE Stuff\Trimester 6 - 16T2\Studio 2\Project 1 - Killbots\temp\Release\RyBot\RyBot.exp
-  Generating code
-  2 of 454 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    9 functions had inline decision re-evaluated but remain unchanged
-  Finished generating code
-  RyBot.vcxproj -> F:\SAE Stuff\Trimester 6 - 16T2\Studio 2\Project 1 - Killbots\bin\data\bots\RyBot.dll
+﻿Build started 27/06/2016 12:42:59 PM.
+     1>Project "C:\Users\rsmith2\Documents\Studio-2---KillBots\projects\RyBot\RyBot.vcxproj" on node 2 (Build target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.Cpp.Platform.targets(64,5): error MSB8020: The build tools for v140 (Platform Toolset = 'v140') cannot be found. To build using the v140 build tools, please install v140 build tools.  Alternatively, you may upgrade to the current Visual Studio tools by selecting the Project menu or right-click the solution, and then selecting "Upgrade Solution...".
+     1>Done Building Project "C:\Users\rsmith2\Documents\Studio-2---KillBots\projects\RyBot\RyBot.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.13

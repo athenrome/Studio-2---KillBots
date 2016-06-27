@@ -166,16 +166,16 @@ void RyBot::ConnectMapWaypoints()
 
 void RyBot::AssignWaypointCost()
 {
-	for each (WaypointRow row in mapWaypoints)//index through all waypoints
-	{
-		for each (Waypoint waypoint in row.rowWaypoints)
-		{
-			for each (Waypoint point in waypoint.adjWaypoints)
-			{
+	//for each (WaypointRow row in mapWaypoints)//index through all waypoints
+	//{
+	//	for each (Waypoint waypoint in row.rowWaypoints)
+	//	{
+	//		for each (Waypoint point in waypoint.adjWaypoints)//cycle through adj waypoints
+	//		{
 
-			}
-		}
-	}
+	//		}
+	//	}
+	//}
 }
 
 void RyBot::GeneratePath()

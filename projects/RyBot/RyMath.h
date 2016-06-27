@@ -5,7 +5,7 @@
 
 float DistanceBetweenPoints(kf::Vector2 currPos, kf::Vector2 targetPos)
 {
-	float distance = (currPos.x * currPos.y) - (targetPos.x * targetPos.y);
+	float distance = sqrtf((currPos.x * targetPos.x) + (currPos.y * targetPos.y));
 
 	return distance;
 }
