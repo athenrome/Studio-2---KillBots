@@ -8,11 +8,12 @@ class Path
 public:
 	int jumpCount;
 	int totalCost;
-	bool reachedWaypoint;
+	bool validPath;
 	std::vector<Waypoint> pathWaypoints;
 
-	Path(std::vector <Waypoint> _waypoints)
+	Path(std::vector <Waypoint> _waypoints, bool _valid)
 	{
+		validPath = _valid;
 		pathWaypoints = _waypoints;
 		jumpCount = pathWaypoints.size();
 

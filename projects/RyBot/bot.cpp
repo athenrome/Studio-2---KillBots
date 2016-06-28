@@ -22,17 +22,15 @@ RyBot::~RyBot()
 
 void RyBot::init(const BotInitialData &initialData, BotAttributes &attrib)
 {
-	attrib.health = 2;
+	attrib.health = 1;
 	attrib.motor = 1;
-	attrib.weaponSpeed = 3;
-	attrib.weaponStrength = 2;
+	attrib.weaponSpeed = 1;
+	attrib.weaponStrength = 1;
 
 	matchData = initialData;
 	botData = attrib;
 
-	PlaceMapWaypoints();
-	ConnectMapWaypoints();
-	AssignWaypointCost();
+	
 	
 }
 
@@ -47,52 +45,102 @@ void RyBot::update(const BotInput &input, BotOutput27 &output)
 
 	if (firstRun == true)
 	{
-		std::cout << currPos << std::endl;
+		PlaceMapWaypoints();
+		ConnectMapWaypoints();
+		
 		FindStartingPos();
+		FindDestPos();
+
+		//A* stuff
+		AssignWaypointCost();
 		GeneratePaths();
 		ChoosePath();
+
 		firstRun = false;
+
+		waypointTarget = chosenPath.pathWaypoints[0];//targetWaypoint(kf::Vector2(32, 32), 1, false);
 	}
 
 	
 
-	ManagePath();
+	if (DistanceBetweenPoints(input.position, waypointTarget.pos) < 5)
+	{
+		std::cout << "At waypoint: " << currPathLoc << " At location: "  << waypointTarget.pos << std::endl;
+		atWaypoint = true;
 
-	ProcessLooking(input, output);
-	ProcessMovement(input, output);
-
-
+		UpdatePath();
+	}
+	else
+	{
+		ProcessLooking(input, output);
+		ProcessMovement(input, output);
+	}
 }
 
 void RyBot::ProcessLooking(const BotInput &input, BotOutput27 &output)
 {
 	output.lookDirection = waypointTarget.pos - input.position;
 
-	output.moveDirection = waypointTarget.pos - input.position;
+	
 }
 
 void RyBot::ProcessMovement(const BotInput &input, BotOutput27 &output)
 {
 	moveTargetDist = DistanceBetweenPoints(currPos, waypointTarget.pos);
-	if (moveTargetDist < 10)//set move speed
-	{
-		output.motor = -botData.motor;//slow to stop
-	}
-	else if (moveTargetDist < 5)
-	{
-		output.motor = 0;//stop moving
-	}
-	else
-	{
-		output.motor = botData.motor; //MAX SPEED!!!!!!!!!!!!!!!!!!
-	}
+	//if (moveTargetDist < 10)//set move speed
+	//{
+	//	output.motor = -botData.motor;//slow to stop
+	//}
+	//else if (moveTargetDist < 5)
+	//{
+	//	output.motor = 0;//stop moving
+	//}
+	//else
+	//{
+	//	output.motor = botData.motor; //MAX SPEED!!!!!!!!!!!!!!!!!!
+	//}
+
+	output.motor = botData.motor;
 
 	std::cout << "Moving to Target: " << waypointTarget.pos << " Distance to Move Target: " << moveTargetDist << std::endl;
 }
 
-void RyBot::ManagePath()
+void RyBot::UpdatePath()
 {
-	waypointTarget = chosenPath.pathWaypoints[0];
+	if (atWaypoint == true)//check if its time for a new waypoint
+	{
+
+		if (returnJourney == true && currPathLoc <= 1)
+		{
+			returnJourney = false;
+		}
+		
+		if (currPathLoc == chosenPath.jumpCount - 1)
+		{
+			returnJourney = true;
+		}
+
+		if (returnJourney == true)
+		{
+			currPathLoc--;
+		}
+		else
+		{
+			currPathLoc++;
+		}
+
+		
+
+		
+		atWaypoint = false;
+
+		
+
+		waypointTarget = chosenPath.pathWaypoints[currPathLoc];
+		std::cout << "Next Waypoint: " << currPathLoc << " Move to: " << waypointTarget.pos << std::endl;
+		
+		
+	}
 }
 
 void RyBot::PlaceMapWaypoints()
@@ -198,7 +246,10 @@ void RyBot::AssignWaypointCost()
 			distanceToDest = 0;
 
 			//get cost values 
+			
 			distanceToDest = round(DistanceBetweenPoints(waypoint.pos, destPoint.pos));
+
+			std::cout << DistanceBetweenPoints(waypoint.pos, destPoint.pos) << std::endl;
 
 			for each (Waypoint point in waypoint.adjWaypoints)
 			{
@@ -214,10 +265,16 @@ void RyBot::AssignWaypointCost()
 				adjWalls += 10000;
 			}
 
+			if (waypoint.isWall == true)
+			{
+				adjWalls += 99999;
+			}
+
 			//create cost
 			waypoint.cost = (adjWalls + distanceToDest);
 
 			assignedCosts++;
+			std::cout << "Assigned costs to waypoint " << assignedCosts << " with a cost of: " << waypoint.cost <<  std::endl;
 		}
 	}
 	std::cout << "Assigned costs to: " << assignedCosts << " points" << std::endl;
@@ -225,68 +282,90 @@ void RyBot::AssignWaypointCost()
 
 void RyBot::GeneratePaths()
 {
-	generatedPaths.clear();
-
 	int pathsToCreate = 12;
 	
 	int maxPathLen = 32;
 	int pathLen = 0;
 
-	bool pathFound = false;
+	bool pathComplete = false;
+
+
+
+	std::vector<Waypoint> pathPoints;
+
+	pathPoints.clear();
+	pathPoints.push_back(startPoint);//set start point as the first point in path
+
+	int adjPointsNum = 0;
+
+	int bestCost = 1000000;
 
 	Waypoint lastPoint = startPoint;
+	Waypoint currPoint;
 
-	for (int i = 0; i < pathsToCreate; i++)
+
+	while (pathComplete == false)
 	{
-		std::vector<Waypoint> pathPoints;
-		pathPoints.clear();
-		pathPoints.push_back(startPoint);//set startpoint as the first element in path
+		bestCost = 1000000;
 
-		int currCost = 100000000;
-
-		while (pathFound == false)
+		for each (Waypoint adjPoint in lastPoint.adjWaypoints)//sort through adj points
 		{
-			for each (Waypoint point in startPoint.adjWaypoints)
+			if (adjPoint.isValid == true)
 			{
-				if (point.cost < currCost)
+				if (adjPoint.cost <= bestCost)
 				{
-					lastPoint = point;
-					pathPoints.push_back(point);
-				}
-
-				if (point.isDest == true)
-				{
-					lastPoint = point;
-					pathFound = true;
-					break;
+					bestCost = adjPoint.cost;
+					currPoint = adjPoint;
+					adjPoint.isValid = false;//lock this point
 				}
 			}
 
-			pathLen++;
-
-			if (pathLen >= maxPathLen)
-			{
-				pathFound = true;
-			}
 		}
 
-		generatedPaths.push_back(pathPoints);
+		pathPoints.push_back(currPoint);//add to the path
+		lastPoint = currPoint; // prep for next cycle
+
+		if (pathPoints.size() >= 32)
+		{
+			pathComplete = true;
+			chosenPath = Path(pathPoints, true);
+		}
+
+
 	}
+
+	generatedPaths.push_back(Path(pathPoints, CheckVector(destPoint, pathPoints)));
 	std::cout << "Created " << generatedPaths.size() << " Paths" << std::endl;
+
 }
 
 void RyBot::ChoosePath()
 {
-	int shortestDist = 10000000; //set initial value high
+	//int shortestDist = 10000000; //set initial value high
 
-	for each (Path path in generatedPaths)
-	{
-		if (path.jumpCount < shortestDist)
-		{
-			shortestDist = path.jumpCount;
-			chosenPath = path;
-		}
-	}
+	//std::vector<Path> validPaths;
+
+	//for each (Path path in generatedPaths)//find valid paths
+	//{
+	//	if (path.validPath == true)
+	//	{
+	//		validPaths.push_back(path);
+	//	}
+	//	
+	//}
+
+	//for each (Path path in validPaths)//find best path
+	//{
+	//	if (path.jumpCount <= shortestDist)//choose the shortest path
+	//	{
+	//		shortestDist = path.jumpCount;
+	//		chosenPath = path;
+	//	}
+	//}
+
+	chosenPath = generatedPaths[0];
+
+	std::cout << "Found path:  " << chosenPath.jumpCount << " jump length" << std::endl;
 }
 
 void RyBot::FindStartingPos()
@@ -313,15 +392,15 @@ void RyBot::FindStartingPos()
 
 	startPoint = closestWaypoint;
 
-	std::cout << "Closest Waypoint at: " << startPoint.pos << std::endl;
+	std::cout << "Starting Point at: " << startPoint.pos << std::endl;
 	
 }
 
 void RyBot::FindDestPos()
 {
-	WaypointRow destRow = mapWaypoints[mapWaypoints.size()];
-	destPoint = destRow.rowWaypoints[destRow.rowWaypoints.size()];
-	destPoint.isDest = true;
+	
+	destPoint = mapWaypoints[matchData.mapData.height].rowWaypoints[matchData.mapData.width];//choose the bottom right corner as the destination point
+	std::cout << "Destination at: " << destPoint.pos << std::endl;
 }
 
 

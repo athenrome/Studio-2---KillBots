@@ -39,7 +39,7 @@ public:
 	void FindStartingPos();
 	void FindDestPos();
 
-	void ManagePath();
+	void UpdatePath();
 	void ProcessMovement(const BotInput &input, BotOutput27 &output);
 	void ProcessLooking(const BotInput &input, BotOutput27 &output);
 
@@ -55,13 +55,6 @@ public:
 	
 
 	kf::Vector2 currPos;
-	kf::Vector2 lastPos;
-	kf::Vector2 distTraveled;
-
-	kf::Vector2 moveTarget;
-	
-	float maxTargetDist = 1000000;
-	bool hasTarget = false;
 
 	float lookAngle;
 	float lookMoveDist = 1.5;
@@ -69,15 +62,14 @@ public:
 
 	int shotQuota = 0;
 
-	bool canMove = true;
-
-	bool visibleOpponents = false;
-
 	BotOutput27::Action lastAction;
 
 	std::vector<WaypointRow> mapWaypoints;
 	std::vector<Path> generatedPaths;
 	Path chosenPath;
+	int currPathLoc = 0;
+	bool atWaypoint = false;
+	bool returnJourney;
 
 	Waypoint waypointTarget;
 	float moveTargetDist;
@@ -85,15 +77,26 @@ public:
 	Waypoint startPoint;
 	Waypoint destPoint;
 
+	std::vector<Waypoint> ValidPoints;
+	std::vector<Waypoint> ClosedPoints;
 	
+	bool CheckVector(Waypoint toFind, std::vector<Waypoint> toSearch)
+	{
+		bool found = false;
+
+		for each (Waypoint point in toSearch)
+		{
+			if (point.pos == toFind.pos)
+			{
+				found = true;
+				break;
+			}
+		}
+		return found;
+	}
+
 };
 
-enum MoveDirection
-{
-	Up,
-	Down,
-	Left,
-	Right,
-};
+
 
 #endif

@@ -22,10 +22,8 @@ public:
 	bool completed;
 	bool inPath;
 
-	//bool topAccessible = false;
-	//bool botAccessible = false;
-	//bool leftAccessible = false;
-	//bool rightAccessible = false;
+	bool isValid = true;
+	
 
 	Waypoint(kf::Vector2 _pos, int _rowPos, bool _isWall)
 	{
