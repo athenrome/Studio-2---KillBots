@@ -31,7 +31,8 @@ void RyBot::init(const BotInitialData &initialData, BotAttributes &attrib)
 	botData = attrib;
 
 	
-	
+	firstRun = true;
+	currPathLoc = 0;
 }
 
 void RyBot::update(const BotInput &input, BotOutput27 &output)
@@ -59,13 +60,34 @@ void RyBot::update(const BotInput &input, BotOutput27 &output)
 		firstRun = false;
 
 		waypointTarget = chosenPath.pathWaypoints[0];//targetWaypoint(kf::Vector2(32, 32), 1, false);
+
+
+
+		
+
+
 	}
 
-	
+	output.lines.clear();
 
-	if (DistanceBetweenPoints(input.position, waypointTarget.pos) < 5)
+	Waypoint* pastPoint = startPoint;
+
+	for each (Waypoint* point in chosenPath.pathWaypoints)
 	{
-		std::cout << "At waypoint: " << currPathLoc << " At location: "  << waypointTarget.pos << std::endl;
+		Line l;
+		l.start = pastPoint->pos;
+		l.end = point->pos;
+		l.r = 1;
+		l.g = 1;
+		l.b = 0;
+		output.lines.push_back(l);
+
+		pastPoint = point;
+	}
+
+	if (DistanceBetweenPoints(input.position, waypointTarget->pos) < 1)
+	{
+		std::cout << "At waypoint: " << currPathLoc << " At location: "  << waypointTarget->pos << std::endl;
 		atWaypoint = true;
 
 		UpdatePath();
@@ -79,30 +101,33 @@ void RyBot::update(const BotInput &input, BotOutput27 &output)
 
 void RyBot::ProcessLooking(const BotInput &input, BotOutput27 &output)
 {
-	output.lookDirection = waypointTarget.pos - input.position;
+	output.lookDirection = waypointTarget->pos - input.position;
 
 	
 }
 
 void RyBot::ProcessMovement(const BotInput &input, BotOutput27 &output)
 {
-	moveTargetDist = DistanceBetweenPoints(currPos, waypointTarget.pos);
-	//if (moveTargetDist < 10)//set move speed
-	//{
-	//	output.motor = -botData.motor;//slow to stop
-	//}
-	//else if (moveTargetDist < 5)
-	//{
-	//	output.motor = 0;//stop moving
-	//}
-	//else
-	//{
-	//	output.motor = botData.motor; //MAX SPEED!!!!!!!!!!!!!!!!!!
-	//}
+	moveTargetDist = DistanceBetweenPoints(currPos, waypointTarget->pos);
 
-	output.motor = botData.motor;
+	output.moveDirection = waypointTarget->pos - input.position;
 
-	std::cout << "Moving to Target: " << waypointTarget.pos << " Distance to Move Target: " << moveTargetDist << std::endl;
+	if (moveTargetDist < 2)//set move speed
+	{
+		output.motor = -botData.motor;//slow to stop
+	}
+	else if (moveTargetDist < 1)
+	{
+		output.motor = 0;//stop moving
+	}
+	else
+	{
+		output.motor = botData.motor; //MAX SPEED!!!!!!!!!!!!!!!!!!
+	}
+
+
+
+	std::cout << "Moving to Target: " << waypointTarget->pos << " Distance to Move Target: " << moveTargetDist << std::endl;
 }
 
 void RyBot::UpdatePath()
@@ -137,7 +162,7 @@ void RyBot::UpdatePath()
 		
 
 		waypointTarget = chosenPath.pathWaypoints[currPathLoc];
-		std::cout << "Next Waypoint: " << currPathLoc << " Move to: " << waypointTarget.pos << std::endl;
+		std::cout << "Next Waypoint: " << currPathLoc << " Move to: " << waypointTarget->pos << std::endl;
 		
 		
 	}
@@ -157,7 +182,7 @@ void RyBot::PlaceMapWaypoints()
 	while (finished == false)
 	{
 		//check if wall or empty, True = wall False empty
-		if (matchData.mapData.data[(currX + currY)*matchData.mapData.width].wall == true)
+		if (matchData.mapData.data[ currX + currY *matchData.mapData.width].wall == true)
 		{
 			mapWaypoints[currY].rowWaypoints.push_back(Waypoint(kf::Vector2(currX, currY), currX, true));
 			waypointsPlaced++;
@@ -169,7 +194,7 @@ void RyBot::PlaceMapWaypoints()
 		}
 
 		//move check coordinates
-		if (currX > matchData.mapData.width)
+		if (currX == matchData.mapData.width)
 		{//reset check row position
 			currX = 0;
 			currY++;
@@ -183,7 +208,7 @@ void RyBot::PlaceMapWaypoints()
 		}
 
 		//if there are no more rows
-		if (currY > matchData.mapData.height)
+		if (currY == matchData.mapData.height)
 		{
 			finished = true;
 			
@@ -199,31 +224,73 @@ void RyBot::ConnectMapWaypoints()
 {
 	int connectedPoints = 0;
 
-	for each (WaypointRow row in mapWaypoints)//index through all waypoints
+	//for (WaypointRow &row:mapWaypoints)//index through all waypoints
+	//{
+	//	for(Waypoint &point:row.rowWaypoints)
+	//	{
+
+	Waypoint* newAdj;
+
+	for (int y = 0; y < mapWaypoints.size();++y)
 	{
-		for each (Waypoint point in row.rowWaypoints)
+		for (int x = 0; x < mapWaypoints[y].rowWaypoints.size(); ++x)
 		{
-			if (row.rowID > 0)//above
-			{
-				point.adjWaypoints.push_back(mapWaypoints[row.rowID - 1].rowWaypoints[point.rowPos]);
-			}
 
-			if (point.rowPos > 0)//left
-			{
-				point.adjWaypoints.push_back(row.rowWaypoints[point.rowPos - 1]);
-			}
+			WaypointRow &row = mapWaypoints[y];
+			Waypoint &point = mapWaypoints[y].rowWaypoints[x];
 
-			if (point.rowPos < matchData.mapData.width)//right
+			if (point.isWall != true)
 			{
-				point.adjWaypoints.push_back(row.rowWaypoints[point.rowPos + 1]);
-			}
+				if (row.rowID > 0)//above
+				{
+					//newAdj = mapWaypoints[row.rowID - 1].rowWaypoints[point.rowPos];
 
-			if (row.rowID < matchData.mapData.height)//below
-			{
-				point.adjWaypoints.push_back(mapWaypoints[row.rowID + 1].rowWaypoints[point.rowPos]);
-			}
+					newAdj = &mapWaypoints[row.rowID - 1].rowWaypoints[point.rowPos];
 
-			connectedPoints++;
+					if (newAdj->isWall == false)
+					{
+						point.adjWaypoints.push_back(newAdj);
+					}
+
+					
+				}
+
+				if (point.rowPos > 0)//left
+				{
+
+					newAdj = &row.rowWaypoints[point.rowPos - 1];
+
+					if (newAdj->isWall == false)
+					{
+						point.adjWaypoints.push_back(newAdj);
+					}
+				}
+
+				if (point.rowPos < matchData.mapData.width - 1)//right
+				{
+					newAdj = &mapWaypoints[row.rowID - 1].rowWaypoints[point.rowPos + 1];
+
+					if (newAdj->isWall == false)
+					{
+						point.adjWaypoints.push_back(newAdj);
+					}
+
+				}
+
+				if (row.rowID < matchData.mapData.height - 1)//below
+				{
+					newAdj = &mapWaypoints[row.rowID + 1].rowWaypoints[point.rowPos];
+
+					if (newAdj->isWall == false)
+					{
+						point.adjWaypoints.push_back(newAdj);
+					}
+
+				}
+
+				connectedPoints++;
+			}
+			
 		}
 	} 
 
@@ -247,13 +314,13 @@ void RyBot::AssignWaypointCost()
 
 			//get cost values 
 			
-			distanceToDest = round(DistanceBetweenPoints(waypoint.pos, destPoint.pos));
+			distanceToDest = round(DistanceBetweenPoints(waypoint.pos, destPoint->pos));
 
-			std::cout << DistanceBetweenPoints(waypoint.pos, destPoint.pos) << std::endl;
+			
 
-			for each (Waypoint point in waypoint.adjWaypoints)
+			for each (Waypoint *point in waypoint.adjWaypoints)
 			{
-				if (point.isWall == true)
+				if (point->isWall == true)
 				{
 					adjWalls++;
 				}
@@ -274,7 +341,7 @@ void RyBot::AssignWaypointCost()
 			waypoint.cost = (adjWalls + distanceToDest);
 
 			assignedCosts++;
-			std::cout << "Assigned costs to waypoint " << assignedCosts << " with a cost of: " << waypoint.cost <<  std::endl;
+			//std::cout << "Assigned costs to waypoint " << assignedCosts << " with a cost of: " << waypoint.cost <<  std::endl;
 		}
 	}
 	std::cout << "Assigned costs to: " << assignedCosts << " points" << std::endl;
@@ -282,16 +349,18 @@ void RyBot::AssignWaypointCost()
 
 void RyBot::GeneratePaths()
 {
+	generatedPaths.clear();
+
 	int pathsToCreate = 12;
 	
-	int maxPathLen = 32;
+	int maxPathLen = 128;
 	int pathLen = 0;
 
 	bool pathComplete = false;
 
 
 
-	std::vector<Waypoint> pathPoints;
+	std::vector<Waypoint*> pathPoints;
 
 	pathPoints.clear();
 	pathPoints.push_back(startPoint);//set start point as the first point in path
@@ -300,23 +369,23 @@ void RyBot::GeneratePaths()
 
 	int bestCost = 1000000;
 
-	Waypoint lastPoint = startPoint;
-	Waypoint currPoint;
+	Waypoint* lastPoint = startPoint;
+	Waypoint* currPoint;
 
 
 	while (pathComplete == false)
 	{
 		bestCost = 1000000;
 
-		for each (Waypoint adjPoint in lastPoint.adjWaypoints)//sort through adj points
+		for each (Waypoint *adjPoint in lastPoint->adjWaypoints)//sort through adj points
 		{
-			if (adjPoint.isValid == true)
+			if (adjPoint->isValid == true)
 			{
-				if (adjPoint.cost <= bestCost)
+				if (adjPoint->cost <= bestCost)
 				{
-					bestCost = adjPoint.cost;
+					bestCost = adjPoint->cost;
 					currPoint = adjPoint;
-					adjPoint.isValid = false;//lock this point
+					adjPoint->isValid = false;//lock this point
 				}
 			}
 
@@ -325,7 +394,7 @@ void RyBot::GeneratePaths()
 		pathPoints.push_back(currPoint);//add to the path
 		lastPoint = currPoint; // prep for next cycle
 
-		if (pathPoints.size() >= 32)
+		if (pathPoints.size() >= maxPathLen)
 		{
 			pathComplete = true;
 			chosenPath = Path(pathPoints, true);
@@ -341,29 +410,10 @@ void RyBot::GeneratePaths()
 
 void RyBot::ChoosePath()
 {
-	//int shortestDist = 10000000; //set initial value high
-
-	//std::vector<Path> validPaths;
-
-	//for each (Path path in generatedPaths)//find valid paths
-	//{
-	//	if (path.validPath == true)
-	//	{
-	//		validPaths.push_back(path);
-	//	}
-	//	
-	//}
-
-	//for each (Path path in validPaths)//find best path
-	//{
-	//	if (path.jumpCount <= shortestDist)//choose the shortest path
-	//	{
-	//		shortestDist = path.jumpCount;
-	//		chosenPath = path;
-	//	}
-	//}
 
 	chosenPath = generatedPaths[0];
+
+	
 
 	std::cout << "Found path:  " << chosenPath.jumpCount << " jump length" << std::endl;
 }
@@ -379,28 +429,37 @@ void RyBot::FindStartingPos()
 	int roundY = roundf(currPos.y);
 	currPos = kf::Vector2(roundX, roundY);
 
-	for each (WaypointRow row in mapWaypoints)
+	startPoint = &mapWaypoints[roundY].rowWaypoints[roundX];
+
+	if (startPoint->isWall == true)
 	{
-		for each (Waypoint point in row.rowWaypoints)
-		{
-			if (point.pos == currPos )
-			{
-				closestWaypoint = point;
-			}
-		}
+		startPoint = Waypoint()
 	}
 
-	startPoint = closestWaypoint;
+	//for each (WaypointRow row in mapWaypoints)
+	//{
+	//	for each (Waypoint point in row.rowWaypoints)
+	//	{
+	//		if (point.pos == currPos)
+	//		{
+	//			closestWaypoint = point;
+	//		}
+	//	}
+	//}
 
-	std::cout << "Starting Point at: " << startPoint.pos << std::endl;
+	//startPoint = closestWaypoint;
+
+	std::cout << "Starting Point at: " << startPoint->pos << std::endl;
 	
 }
 
 void RyBot::FindDestPos()
 {
 	
-	destPoint = mapWaypoints[matchData.mapData.height].rowWaypoints[matchData.mapData.width];//choose the bottom right corner as the destination point
-	std::cout << "Destination at: " << destPoint.pos << std::endl;
+	//destPoint = mapWaypoints[matchData.mapData.height].rowWaypoints[matchData.mapData.width];//choose the bottom right corner as the destination point
+	destPoint = &mapWaypoints[29].rowWaypoints[29];//choose the bottom right corner as the destination point
+
+	std::cout << "Destination at: " << destPoint->pos << std::endl;
 }
 
 

@@ -1,19 +1,19 @@
 ﻿  bot.cpp
-f:\sae stuff\trimester 6 - 16t2\studio 2\project 1 - killbots\projects\rybot\Path.h(3): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-f:\sae stuff\trimester 6 - 16t2\studio 2\project 1 - killbots\projects\rybot\Path.h(22): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\rsmith2\documents\studio-2---killbots\projects\rybot\Path.h(3): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+c:\users\rsmith2\documents\studio-2---killbots\projects\rybot\Path.h(22): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
 bot.cpp(16): warning C4244: 'argument': conversion from 'time_t' to 'kf::u32', possible loss of data
-bot.cpp(162): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-bot.cpp(167): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-bot.cpp(250): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-bot.cpp(274): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-bot.cpp(317): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-bot.cpp(378): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-bot.cpp(379): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-bot.cpp(380): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-     Creating library F:\SAE Stuff\Trimester 6 - 16T2\Studio 2\Project 1 - Killbots\temp\Release\RyBot\RyBot.lib and object F:\SAE Stuff\Trimester 6 - 16T2\Studio 2\Project 1 - Killbots\temp\Release\RyBot\RyBot.exp
+bot.cpp(189): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+bot.cpp(194): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+bot.cpp(277): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+bot.cpp(301): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+bot.cpp(344): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+bot.cpp(386): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+bot.cpp(387): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+bot.cpp(388): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     Creating library C:\Users\rsmith2\Documents\Studio-2---KillBots\temp\Release\RyBot\RyBot.lib and object C:\Users\rsmith2\Documents\Studio-2---KillBots\temp\Release\RyBot\RyBot.exp
   Generating code
-  17 of 533 functions ( 3.2%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    4 functions had inline decision re-evaluated but remain unchanged
+  13 of 604 functions ( 2.2%) were compiled, the rest were copied from previous compilation.
+    4 functions were new in current compilation
+    17 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
-  RyBot.vcxproj -> F:\SAE Stuff\Trimester 6 - 16T2\Studio 2\Project 1 - Killbots\bin\data\bots\RyBot.dll
+  RyBot.vcxproj -> C:\Users\rsmith2\Documents\Studio-2---KillBots\bin\data\bots\RyBot.dll

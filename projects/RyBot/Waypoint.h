@@ -11,7 +11,7 @@ public:
 	int rowPos;
 	kf::Vector2 pos;
 	
-	std::vector<Waypoint> adjWaypoints;
+	std::vector<Waypoint*> adjWaypoints;
 
 	float cost;
 
@@ -32,14 +32,14 @@ public:
 		isWall = _isWall;
 		inPath = false;
 
-		if (isWall == true)
+		/*if (isWall == true)
 		{
 			std::cout << "Created waypoint at: " << _pos << " as Wall" << std::endl;
 		}
 		else
 		{
 			std::cout << "Created waypoint at: " << _pos << " as Empty" << std::endl;
-		}
+		}*/
 	}
 
 	Waypoint();

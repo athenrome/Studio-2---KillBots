@@ -50,9 +50,6 @@ public:
 
 	bool firstRun = true;
 
-	std::vector<Opponent> opponents;
-	Opponent currTarget;
-	
 
 	kf::Vector2 currPos;
 
@@ -71,22 +68,22 @@ public:
 	bool atWaypoint = false;
 	bool returnJourney;
 
-	Waypoint waypointTarget;
+	Waypoint* waypointTarget;
 	float moveTargetDist;
 
-	Waypoint startPoint;
-	Waypoint destPoint;
+	Waypoint* startPoint;
+	Waypoint* destPoint;
 
-	std::vector<Waypoint> ValidPoints;
-	std::vector<Waypoint> ClosedPoints;
+	std::vector<Waypoint*> ValidPoints;
+	std::vector<Waypoint*> ClosedPoints;
 	
-	bool CheckVector(Waypoint toFind, std::vector<Waypoint> toSearch)
+	bool CheckVector(Waypoint* toFind, std::vector<Waypoint*> toSearch)
 	{
 		bool found = false;
 
-		for each (Waypoint point in toSearch)
+		for each (Waypoint* point in toSearch)
 		{
-			if (point.pos == toFind.pos)
+			if (point->pos == toFind->pos)
 			{
 				found = true;
 				break;
