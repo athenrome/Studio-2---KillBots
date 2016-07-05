@@ -94,7 +94,7 @@ void RyBot::update(const BotInput &input, BotOutput27 &output)
 		pastPoint = point;
 	}
 
-	if (DistanceBetweenPoints(input.position, waypointTarget->pos) < 0.75)
+	if (DistanceBetweenPoints(input.position, waypointTarget->pos) < 0.5)
 	{
 		std::cout << "At waypoint: " << currPathLoc << " At location: "  << waypointTarget->pos << std::endl;
 		atWaypoint = true;
@@ -121,17 +121,17 @@ void RyBot::ProcessMovement(const BotInput &input, BotOutput27 &output)
 
 	output.moveDirection = waypointTarget->pos - input.position;
 
-	if (moveTargetDist < 0.75)//set move speed
+	if (moveTargetDist < 0.5)//set move speed
 	{
 		output.motor = -botData.motor;//slow to stop
 	}
-	else if (moveTargetDist < 0.5)
+	else if (moveTargetDist < 0.25)
 	{
 		output.motor = 0;//stop moving
 	}
 	else
 	{
-		output.motor = botData.motor; //MAX SPEED!!!!!!!!!!!!!!!!!!
+		output.motor = botData.motor / 2; //MAX SPEED!!!!!!!!!!!!!!!!!! well half now
 	}
 
 

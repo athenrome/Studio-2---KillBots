@@ -1,37 +1,22 @@
-﻿Build started 4/07/2016 1:25:38 PM.
-     1>Project "C:\Users\rsmith2\Documents\Studio-2---KillBots\projects\RyBot\RyBot.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\rsmith2\Documents\Studio-2---KillBots\dev\include" /I. /I"C:\Users\rsmith2\Documents\Studio-2---KillBots\projects\killbotscore" /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _USRDLL /D BOT_EXPORTS /D _WINDLL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /openmp /Fo"C:\Users\rsmith2\Documents\Studio-2---KillBots\temp\Release\RyBot\\" /Fd"C:\Users\rsmith2\Documents\Studio-2---KillBots\temp\Release\RyBot\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt bot.cpp
-         bot.cpp
-     1>c:\users\rsmith2\documents\studio-2---killbots\projects\rybot\Path.h(3): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-     1>c:\users\rsmith2\documents\studio-2---killbots\projects\rybot\Path.h(22): warning C4244: '+=' : conversion from 'float' to 'int', possible loss of data
-     1>bot.cpp(16): warning C4244: 'argument' : conversion from 'time_t' to 'kf::u32', possible loss of data
-     1>bot.cpp(65): warning C4018: '<' : signed/unsigned mismatch
-     1>bot.cpp(67): warning C4018: '<' : signed/unsigned mismatch
-     1>bot.cpp(70): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
-     1>bot.cpp(71): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>bot.cpp(199): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>bot.cpp(204): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>bot.cpp(243): warning C4018: '<' : signed/unsigned mismatch
-     1>bot.cpp(245): warning C4018: '<' : signed/unsigned mismatch
-     1>bot.cpp(350): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>bot.cpp(393): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>bot.cpp(404): warning C4018: '>=' : signed/unsigned mismatch
-     1>bot.cpp(435): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
-     1>bot.cpp(436): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
-     1>bot.cpp(437): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\rsmith2\Documents\Studio-2---KillBots\bin\data\bots\RyBot.dll" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Users\rsmith2\Documents\Studio-2---KillBots\dev\lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib qgf2dutil.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"C:\Users\rsmith2\Documents\Studio-2---KillBots\bin\data\bots\RyBot.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\rsmith2\Documents\Studio-2---KillBots\temp\Release\RyBot\RyBot.lib" /MACHINE:X86 /SAFESEH /DLL "C:\Users\rsmith2\Documents\Studio-2---KillBots\temp\Release\RyBot\bot.obj"
-         "C:\Users\rsmith2\Documents\Studio-2---KillBots\temp\Release\RyBot\Opponent.obj"
-         "C:\Users\rsmith2\Documents\Studio-2---KillBots\temp\Release\RyBot\Path.obj"
-         "C:\Users\rsmith2\Documents\Studio-2---KillBots\temp\Release\RyBot\Waypoint.obj"
-            Creating library C:\Users\rsmith2\Documents\Studio-2---KillBots\temp\Release\RyBot\RyBot.lib and object C:\Users\rsmith2\Documents\Studio-2---KillBots\temp\Release\RyBot\RyBot.exp
-         Generating code
-         Finished generating code
-         RyBot.vcxproj -> C:\Users\rsmith2\Documents\Studio-2---KillBots\bin\data\bots\RyBot.dll
-     1>Done Building Project "C:\Users\rsmith2\Documents\Studio-2---KillBots\projects\RyBot\RyBot.vcxproj" (Build target(s)).
-
-Build succeeded.
-
-Time Elapsed 00:00:00.91
+﻿  bot.cpp
+f:\sae stuff\trimester 6 - 16t2\studio 2\project 1 - killbots\projects\rybot\Path.h(3): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+f:\sae stuff\trimester 6 - 16t2\studio 2\project 1 - killbots\projects\rybot\Path.h(22): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+bot.cpp(16): warning C4244: 'argument': conversion from 'time_t' to 'kf::u32', possible loss of data
+bot.cpp(196): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+bot.cpp(201): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+bot.cpp(240): warning C4018: '<': signed/unsigned mismatch
+bot.cpp(242): warning C4018: '<': signed/unsigned mismatch
+bot.cpp(339): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+bot.cpp(363): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+bot.cpp(441): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+bot.cpp(461): warning C4018: '>=': signed/unsigned mismatch
+bot.cpp(492): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+bot.cpp(493): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+bot.cpp(494): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     Creating library F:\SAE Stuff\Trimester 6 - 16T2\Studio 2\Project 1 - Killbots\temp\Release\RyBot\RyBot.lib and object F:\SAE Stuff\Trimester 6 - 16T2\Studio 2\Project 1 - Killbots\temp\Release\RyBot\RyBot.exp
+  Generating code
+  2 of 653 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  RyBot.vcxproj -> F:\SAE Stuff\Trimester 6 - 16T2\Studio 2\Project 1 - Killbots\bin\data\bots\RyBot.dll
