@@ -31,9 +31,10 @@ public:
 
 	void PlaceMapWaypoints();
 	void ConnectMapWaypoints();
-	void AssignWaypointCost();
+	void AssignMapWaypointCost();
+	void AssignPathWaypointCost();
 
-	void GeneratePaths();
+	void GeneratePath();
 	void ChoosePath();
 
 	void FindStartingPos();

@@ -54,15 +54,16 @@ void RyBot::update(const BotInput &input, BotOutput27 &output)
 		FindDestPos();
 
 		//A* stuff
-		AssignWaypointCost();
-		GeneratePaths();
+		AssignMapWaypointCost();
+		//AssignPathWaypointCost();
+		GeneratePath();
 		ChoosePath();
 
 		firstRun = false;
 
 		waypointTarget = chosenPath.pathWaypoints[0];//targetWaypoint(kf::Vector2(32, 32), 1, false);
 
-		output.text.clear();
+		/*output.text.clear();
 		for (int y = 1; y < mapWaypoints.size(); ++y)
 		{
 			for (int x = 1; x < mapWaypoints[y].rowWaypoints.size(); ++x)
@@ -73,12 +74,7 @@ void RyBot::update(const BotInput &input, BotOutput27 &output)
 				t.size = 30;
 				output.text.push_back(t);
 			}
-		}
-
-
-		
-
-
+		}*/
 	}
 
 	output.lines.clear();
@@ -324,7 +320,7 @@ void RyBot::ConnectMapWaypoints()
 
 }
 
-void RyBot::AssignWaypointCost()
+void RyBot::AssignMapWaypointCost()//does entire map
 {
 	int assignedCosts = 0;
 	int adjWalls = 0;
@@ -340,7 +336,7 @@ void RyBot::AssignWaypointCost()
 
 			//get cost values 
 			
-			distanceToDest = 0;//round(DistanceBetweenPoints(waypoint.pos, destPoint->pos));
+			distanceToDest = round(DistanceBetweenPoints(waypoint.pos, destPoint->pos));
 
 			
 
@@ -373,7 +369,42 @@ void RyBot::AssignWaypointCost()
 	std::cout << "Assigned costs to: " << assignedCosts << " points" << std::endl;
 }
 
-void RyBot::GeneratePaths()
+void RyBot::AssignPathWaypointCost()//only does waypoints surrounding start point and journey to the destination
+{
+	bool pathComplete;
+
+	std::vector<Waypoint*> assignedPoints;
+	
+
+	Waypoint* lastPoint = startPoint;
+
+	
+	int distanceToDest = 0;
+
+	while (pathComplete == false)
+	{
+		for each (Waypoint* point in lastPoint->adjWaypoints)
+		{
+			if (point->isWall == true)//give a crazy high score if pointis a wall
+			{
+				point->cost += 10000;
+			}
+
+			point->cost += DistanceBetweenPoints(point->pos, destPoint->pos);
+		} 
+
+		int bestCost = 1000000000;// choose point for next cycle
+		for each (Waypoint* point in lastPoint->adjWaypoints)
+		{
+			if (point->cost <= bestCost)
+			{
+				lastPoint = point;// choose the point with the lowest cost to assign costs to next
+			}
+		}
+	}
+}
+
+void RyBot::GeneratePath()
 {
 	generatedPaths.clear();
 
@@ -421,12 +452,18 @@ void RyBot::GeneratePaths()
 		pathPoints.push_back(currPoint);//add to the path
 		lastPoint = currPoint; // prep for next cycle
 
-		if (pathPoints.size() >= maxPathLen)
+		if (currPoint->isDest == true)
+		{
+			pathComplete = true;
+			std::cout << "Path has reached dest point" << std::endl;
+			chosenPath = Path(pathPoints, true);
+		}
+		else if (pathPoints.size() >= maxPathLen)
 		{
 			pathComplete = true;
 			chosenPath = Path(pathPoints, true);
+			std::cout << "Path has reached size limit" << std::endl;
 		}
-
 
 	}
 
@@ -445,7 +482,6 @@ void RyBot::ChoosePath()
 
 	std::cout << "Found path:  " << chosenPath.jumpCount << " jump length" << std::endl;
 }
-
 void RyBot::FindStartingPos()
 {
 	Waypoint closestWaypoint;
@@ -459,26 +495,24 @@ void RyBot::FindStartingPos()
 
 	startPoint = &mapWaypoints[roundY].rowWaypoints[roundX];
 
+	startPoint->isStart = true;
 
 
 	std::cout << "Starting Point at: " << startPoint->pos << std::endl;
 	
 }
-
 void RyBot::FindDestPos()
 {
 	
 	//destPoint = mapWaypoints[matchData.mapData.height].rowWaypoints[matchData.mapData.width];//choose the bottom right corner as the destination point
 	destPoint = &mapWaypoints[29].rowWaypoints[29];//choose the bottom right corner as the destination point
+	destPoint->isDest = true;
 
 	std::cout << "Destination at: " << destPoint->pos << std::endl;
 }
-
-
 void RyBot::result(bool won)
 {
 }
-
 void RyBot::bulletResult(bool hit)
 {
 	//result from the last bullet hit
